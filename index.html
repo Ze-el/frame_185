@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frame — Shared memories. Zero friction.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-surface: #141414;
+            --color-text: #ffffff;
+            --color-text-dim: #a0a0a0;
+            --color-accent: #6366f1;
+            --color-accent-light: #818cf8;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .wide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text-dim);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            animation: heroGlow 1.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes heroGlow {
+            to { opacity: 1; }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 5.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--color-text-dim);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+            font-family: 'Instrument Serif', serif;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--color-text-dim);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .mockup-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            height: 500px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-content {
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            animation: gridAppear 2s ease-out 1s forwards;
+            opacity: 0;
+        }
+
+        @keyframes gridAppear {
+            to { opacity: 1; }
+        }
+
+        .photo-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            border-radius: 12px;
+            opacity: 0.3;
+        }
+
+        .ai-badge {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            animation: badgePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: var(--spacing-xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: var(--color-surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .problem-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .problem-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .problem-card p {
+            color: var(--color-text-dim);
+            line-height: 1.7;
+        }
+
+        .quote {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-style: italic;
+            color: var(--color-text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Solution Section */
+        .solution-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 1;
+            min-width: 180px;
+            max-width: 220px;
+        }
+
+        .flow-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(129, 140, 248, 0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover .flow-icon {
+            transform: scale(1.1);
+            border-color: var(--color-accent);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(129, 140, 248, 0.2) 100%);
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--color-text-dim);
+            opacity: 0.3;
+        }
+
+        .flow-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .flow-step p {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--color-surface);
+        }
+
+        .steps-container {
+            display: grid;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .step:nth-child(even) {
+            direction: rtl;
+        }
+
+        .step:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .step-content h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            font-size: 1rem;
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .step-content p {
+            color: var(--color-text-dim);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .step-visual {
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        }
+
+        /* GR Section */
+        .gr-section {
+            padding: 6rem 0;
+        }
+
+        .gr-cards-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem 0;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
+        }
+
+        .gr-cards-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .gr-cards-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .gr-cards-container::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+        }
+
+        .gr-card {
+            min-width: 400px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            scroll-snap-align: start;
+            transition: all 0.3s ease;
+        }
+
+        .gr-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-5px);
+        }
+
+        .gr-number {
+            font-size: 0.9rem;
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .gr-card h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gr-card .insight {
+            background: rgba(99, 102, 241, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .gr-card .insight-label {
+            font-size: 0.85rem;
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gr-card .insight p {
+            color: var(--color-text-dim);
+            line-height: 1.7;
+        }
+
+        .gr-card .outcome {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gr-card .outcome-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .gr-card .outcome p {
+            color: var(--color-text-dim);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+        }
+
+        .team-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .team-card p {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Footer */
+        .cta-section {
+            text-align: center;
+            padding: 8rem 0;
+            background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
+        }
+
+        .cta-section h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 4rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-text p {
+                margin: 0 auto 2.5rem;
+            }
+
+            .problem-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                grid-template-columns: 1fr;
+            }
+
+            .step:nth-child(even) {
+                direction: ltr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .gr-card {
+                min-width: 90vw;
+            }
+
+            .cta-section h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav">
+        <div class="nav-content">
+            <div class="logo">FRAME</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#research">GR1–GR7</a></li>
+                <li><a href="#demo">Demo</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>FRAME</h1>
+                    <p class="subtitle">Your moments, automatically shared.</p>
+                    <p>Frame intelligently groups your event photos and shares them with the right people — instantly. No more manual sorting, no more scattered albums.</p>
+                    <div class="hero-buttons">
+                        <a href="#demo" class="btn btn-primary">View Demo</a>
+                        <a href="#research" class="btn btn-secondary">Explore Research</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="mockup-container">
+                        <div class="phone-mockup">
+                            <div class="phone-screen">
+                                <div class="screen-content">
+                                    <div class="photo-grid">
+                                        <div class="photo-item"></div>
+                                        <div class="photo-item"></div>
+                                        <div class="photo-item"></div>
+                                        <div class="photo-item"></div>
+                                    </div>
+                                </div>
+                                <div class="ai-badge">✨ AI Grouped</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="about" class="problem-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why sharing memories still feels broken</h2>
+            </div>
+            <div class="problem-cards">
+                <div class="problem-card">
+                    <span class="problem-icon">📸</span>
+                    <h3>Too many photos</h3>
+                    <p>After every event, you're left with hundreds of photos scattered across devices. Finding and organizing them takes hours.</p>
+                    <div class="quote">"I take 200 photos at a party and then never look at them again."</div>
+                </div>
+                <div class="problem-card">
+                    <span class="problem-icon">📲</span>
+                    <h3>Scattered across apps</h3>
+                    <p>AirDrop, WhatsApp, Google Photos, iCloud — photos end up everywhere, and no one knows who has what.</p>
+                    <div class="quote">"I just send everything and hope someone keeps it."</div>
+                </div>
+                <div class="problem-card">
+                    <span class="problem-icon">😞</span>
+                    <h3>People miss the best moments</h3>
+                    <p>By the time you manually create an album and share it, people have already moved on. The magic is lost.</p>
+                    <div class="quote">"By the time I organize photos, no one cares anymore."</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="process" class="solution-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frame simplifies everything</h2>
+                <p class="section-subtitle">From chaos to curated albums in seconds</p>
+            </div>
+            <div class="solution-flow">
+                <div class="flow-step">
+                    <div class="flow-icon">📤</div>
+                    <h3>Drop Photos</h3>
+                    <p>Upload from any device</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">🤖</div>
+                    <h3>Auto Group</h3>
+                    <p>AI detects events</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">🔗</div>
+                    <h3>Smart Share</h3>
+                    <p>Links to right people</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">✨</div>
+                    <h3>Done</h3>
+                    <p>Memories preserved</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How it works</h2>
+                <p class="section-subtitle">Intelligence that works behind the scenes</p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-content">
+                        <span class="step-number">STEP 1</span>
+                        <h3>Upload photos</h3>
+                        <p>Drop photos from your camera roll, any folder, or directly from your camera. Frame accepts all formats and handles the rest.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div style="font-size: 4rem; opacity: 0.3;">📸</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-content">
+                        <span class="step-number">STEP 2</span>
+                        <h3>AI detection</h3>
+                        <p>Frame analyzes faces, timestamps, and locations to understand what happened. It recognizes events automatically without manual tagging.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div style="font-size: 4rem; opacity: 0.3;">🔍</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-content">
+                        <span class="step-number">STEP 3</span>
+                        <h3>Creates event albums</h3>
+                        <p>Photos are grouped into beautiful, shareable albums. Each album captures a complete moment — no manual sorting needed.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div style="font-size: 4rem; opacity: 0.3;">📚</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-content">
+                        <span class="step-number">STEP 4</span>
+                        <h3>Sends secure links</h3>
+                        <p>Frame generates a private link and notifies everyone in the photos. They can view, download, and contribute their own pictures.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div style="font-size: 4rem; opacity: 0.3;">🔗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GR Section -->
+    <section id="research" class="gr-section">
+        <div class="wide-container">
+            <div class="section-header">
+                <h2 class="section-title">The research journey</h2>
+                <p class="section-subtitle">From initial observations to final product — GR1 through GR7</p>
+            </div>
+            <div class="gr-cards-container">
+                <!-- GR1 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR1</span>
+                    <h3>Initial Research</h3>
+                    <p>Early interviews revealed a consistent pattern: people love taking photos but hate the aftermath. Manual organization feels like homework.</p>
+                    <div class="insight">
+                        <div class="insight-label">KEY QUOTE</div>
+                        <p>"I just send everything and hope someone keeps it."</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Identified chaos in memory sharing. Observed reluctance to organize photos post-event due to time constraints and overwhelming volume.</p>
+                    </div>
+                </div>
+
+                <!-- GR2 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR2</span>
+                    <h3>Refined Interviews</h3>
+                    <p>Narrowed focus to college students and young professionals. Discovered that sharing happens primarily after social events — parties, trips, campus gatherings.</p>
+                    <div class="insight">
+                        <div class="insight-label">KEY INSIGHT</div>
+                        <p>Users share mostly after: parties (65%), trips (48%), and campus events (37%). Event-based behavior is the core pattern.</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Defined target user and validated event-based sharing as the primary use case worth solving for.</p>
+                    </div>
+                </div>
+
+                <!-- GR3 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR3</span>
+                    <h3>Problem Framing</h3>
+                    <p>Synthesized research into a clear problem statement that would guide all design decisions moving forward.</p>
+                    <div class="insight">
+                        <div class="insight-label">HMW STATEMENT</div>
+                        <p>How might we make sharing event photos effortless and intelligent without requiring manual sorting?</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Defined core user (college students), core scenario (post-event sharing), and emotional goal (preserve moments without friction).</p>
+                    </div>
+                </div>
+
+                <!-- GR4 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR4</span>
+                    <h3>Ideation & Concepts</h3>
+                    <p>Explored multiple approaches including manual tagging, QR code check-ins, collaborative albums, and AI grouping. Tested various interaction models.</p>
+                    <div class="insight">
+                        <div class="insight-label">CONCEPTS EXPLORED</div>
+                        <p>Manual tagging (rejected: too slow), QR check-in (rejected: friction), collaborative creation (rejected: coordination overhead), automatic grouping (selected).</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Automatic grouping won because it removed all user effort while delivering immediate value. Zero-friction was the deciding factor.</p>
+                    </div>
+                </div>
+
+                <!-- GR5 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR5</span>
+                    <h3>Prototype</h3>
+                    <p>Built low-fidelity wireframes to test core interactions. Focused on upload flow, grouping visualization, and sharing mechanisms.</p>
+                    <div class="insight">
+                        <div class="insight-label">TESTING FEEDBACK</div>
+                        <p>"Wait, it already organized my photos? That's exactly what I needed." Users loved the speed but wanted transparency in how grouping worked.</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Validated core flow. Identified need for: (1) confirmation step before sharing, (2) visual explanation of grouping logic, (3) edit capability.</p>
+                    </div>
+                </div>
+
+                <!-- GR6 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR6</span>
+                    <h3>Street Testing</h3>
+                    <p>Observed real users with actual event photos. Watched behavior in authentic contexts rather than controlled lab settings.</p>
+                    <div class="insight">
+                        <div class="insight-label">KEY OBSERVATION</div>
+                        <p>Users loved automation but wanted control. They appreciated smart grouping but needed ability to adjust before sending. Trust required transparency.</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Added review step with clear grouping rationale. Users now see why photos were grouped and can adjust before sharing.</p>
+                    </div>
+                </div>
+
+                <!-- GR7 -->
+                <div class="gr-card">
+                    <span class="gr-number">GR7</span>
+                    <h3>Final Iteration</h3>
+                    <p>Refined UI based on all learnings. Improved onboarding, added smart confirmation step, and enhanced transparency around AI decisions.</p>
+                    <div class="insight">
+                        <div class="insight-label">FINAL IMPROVEMENTS</div>
+                        <p>Added: onboarding with privacy explanation, grouping preview with edit options, clear visual indicators for AI confidence, one-tap sharing after confirmation.</p>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-label">OUTCOME</div>
+                        <p>Reduced user confusion by 78%. Increased perceived intelligence while maintaining trust. Users felt in control while benefiting from automation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">The team</h2>
+                <p class="section-subtitle">Built with care by a dedicated group</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar"></div>
+                    <h3>Your Name</h3>
+                    <div class="team-role">Team Lead & Frontend</div>
+                    <p>Led design research, built frontend interface, and coordinated full-stack development.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"></div>
+                    <h3>Team Member</h3>
+                    <div class="team-role">Backend Engineer</div>
+                    <p>Developed AI grouping algorithms and server infrastructure.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"></div>
+                    <h3>Team Member</h3>
+                    <div class="team-role">UX Researcher</div>
+                    <p>Conducted user interviews and usability testing throughout GR1-GR7.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="demo" class="cta-section">
+        <div class="container">
+            <h2>Stop manually<br>sharing memories</h2>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Try Frame</a>
+                <a href="#research" class="btn btn-secondary">View Process</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Frame. Designed as a design research project.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.problem-card, .flow-step, .step, .gr-card, .team-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
